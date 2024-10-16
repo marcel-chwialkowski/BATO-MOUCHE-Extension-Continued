@@ -137,7 +137,7 @@ def otp_calculate_route_time_new(point1, point2, date=None, time=None):
         # Parse the JSON response
         data = response.json()
         #just see if this is a tiny bit faster please
-        return 
+        
         # Check if itineraries are present in the response
         itineraries = data.get('data', {}).get('plan', {}).get('itineraries', [])
         if not itineraries:
@@ -168,10 +168,6 @@ def otp_calculate_time_matrix(gdf,
     gdf.reset_index(inplace=True)
     time_by_id = pd.DataFrame(index=gdf[idCol])
 
-
-    start_time = time.time()
-
-
     for idx, row in gdf.iterrows():
         #print(f"Calculating weights for {idx + 1} of {len(gdf)}")
         for idx1, row1 in gdf.loc[idx:].iterrows():
@@ -189,13 +185,11 @@ def otp_calculate_time_matrix(gdf,
             time_by_id.at[gdf.at[idx, idCol], gdf.at[idx1, idCol]] = tm
             time_by_id.at[gdf.at[idx1, idCol], gdf.at[idx, idCol]] = tm
         
-        end_time = time.time()
-        print(f"Time elapsed: {end_time - start_time}")
-        break
+
+
 
             
     gdf.set_index(idCol, inplace=True)
-    time_by_id.to_csv(output_file_path)
 
     return time_by_id
         
